@@ -1,0 +1,12 @@
+# ROS 2 build artifacts and logs
+Autonomous_system_design/build/
+Autonomous_system_design/install/
+Autonomous_system_design/log/
+
+# Python cache files
+*.pyc
+__pycache__/
+
+# System / Editor files
+.DS_Store
+Thumbs.db

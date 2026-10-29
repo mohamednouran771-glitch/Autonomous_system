@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<!-- Values taken from Shell Car assembly_2.xacro: 2 * wheel_half_track and wheel mesh diameter. -->
+<xacro:property name="wheel_separation" value="0.1451" />
+<xacro:property name="wheel_radius" value="0.036875" />
+
+<gazebo>
+     <plugin filename="gz-sim-diff-drive-system"
+         name="gz::sim::systems::DiffDrive">
+         <left_joint>left_wheel_joint</left_joint>
+         <right_joint>right_wheel_joint</right_joint>
+         <wheel_separation>${wheel_separation}</wheel_separation>
+         <wheel_radius>${wheel_radius}</wheel_radius>
+         <topic>/cmd_vel</topic>
+         <odom_topic>/odom</odom_topic>
+         <frame_id>odom</frame_id>
+         <child_frame_id>base_link</child_frame_id>
+     </plugin>
+</gazebo>
+<gazebo>
+        <plugin
+            filename="gz-sim-joint-state-publisher-system" 
+            name="gz::sim::systems::JointStatePublisher">
+            <joint_name>left_wheel_joint</joint_name>
+            <joint_name>right_wheel_joint</joint_name>
+        </plugin>
+    </gazebo>
+</robot>    

@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot
+  xmlns:xacro="http://www.ros.org/wiki/xacro"
+  name="shell_car">
+  <!-- Assembly dimensions in metres. Mesh dimensions are defined by the STL files. -->
+  <xacro:property name="robot_length" value="0.2" />
+  <xacro:property name="robot_width" value="0.1451" />
+  <xacro:property name="robot_height" value="0.18202" />
+  <xacro:property name="wheel_x_offset" value="-0.0588" />
+  <xacro:property name="wheel_half_track" value="0.07255" />
+  <xacro:property name="wheel_z_offset" value="0.03652" />
+  <xacro:property name="caster_x_offset" value="0.1" />
+  <xacro:property name="caster_z_offset" value="0.005" />
+  <xacro:property name="camera_x_offset" value="0.12295" />
+  <xacro:property name="camera_z_offset" value="0.15132" />
+  <xacro:property name="laser_x_offset" value="0.0575" />
+  <xacro:property name="laser_z_offset" value="0.18202" />
+
+  <!-- Link masses in kilograms. -->
+  <xacro:property name="base_mass" value="0.39349" />
+  <xacro:property name="wheel_mass" value="0.030404" />
+  <xacro:property name="caster_mass" value="0.02" />
+  <xacro:property name="camera_mass" value="0.03" />
+  <xacro:property name="laser_mass" value="0.047104" />
+  <xacro:property name="total_robot_mass" value="${base_mass + 2 * wheel_mass + caster_mass + camera_mass + laser_mass}" />
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0.01623 -0.0013513 0.064696"
+        rpy="0 0 0" />
+      <mass
+        value="${base_mass}" />
+      <inertia
+        ixx="0.00031692"
+        ixy="2.0413E-07"
+        ixz="-1.6246E-05"
+        iyy="0.00099323"
+        iyz="-4.4826E-07"
+        izz="0.0012315" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://autonomous_description/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.12157 0.25098 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://autonomous_description/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="left_wheel_link">
+    <inertial>
+      <origin
+        xyz="1.1303E-07 -5.6229E-08 0.0061074"
+        rpy="0 0 0" />
+      <mass
+        value="${wheel_mass}" />
+      <inertia
+        ixx="1.3605E-05"
+        ixy="1.5542E-11"
+        ixz="1.9472E-10"
+        iyy="1.3605E-05"
+        iyz="3.3887E-10"
+        izz="2.2623E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://autonomous_description/meshes/left_wheel_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.29804 0.29804 0.29804 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://autonomous_description/meshes/left_wheel_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="left_wheel_joint"
+    type="continuous">
+    <origin
+      xyz="${wheel_x_offset} ${wheel_half_track} ${wheel_z_offset}"
+      rpy="1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="left_wheel_link" />
+    <axis
+      xyz="0 0 1" />
+    <dynamics
+      damping="0.1"
+      friction="0.1" />
+  </joint>
+  <link
+    name="right_wheel_link">
+    <inertial>
+      <origin
+        xyz="1.632E-07 4.0012E-08 -0.0061075"
+        rpy="0 0 0" />
+      <mass
+        value="${wheel_mass}" />
+      <inertia
+        ixx="1.3605E-05"
+        ixy="-2.2023E-12"
+        ixz="-1.4202E-10"
+        iyy="1.3605E-05"
+        iyz="-3.6485E-10"
+        izz="2.2623E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://autonomous_description/meshes/right_wheel_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.29804 0.29804 0.29804 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://autonomous_description/meshes/right_wheel_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="right_wheel_joint"
+    type="continuous">
+    <origin
+      xyz="${wheel_x_offset} -${wheel_half_track} ${wheel_z_offset}"
+      rpy="1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="right_wheel_link" />
+    <axis
+      xyz="0 0 1" />
+    <dynamics
+      damping="0.1"
+      friction="0.1" />
+  </joint>
+  <link
+    name="caster_link">
+    <inertial>
+      <origin
+        xyz="0 -5.7429E-20 -3.4694E-18"
+        rpy="0 0 0" />
+      <mass
+        value="${caster_mass}" />
+      <inertia
+        ixx="1E-05"
+        ixy="6.2039E-25"
+        ixz="-9.4409E-39"
+        iyy="1E-05"
+        iyz="0"
+        izz="1E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://autonomous_description/meshes/caster_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://autonomous_description/meshes/caster_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="caster_joint"
+    type="fixed">
+    <origin
+      xyz="${caster_x_offset} 0 ${caster_z_offset}"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="caster_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="camera_link">
+    <inertial>
+      <origin
+        xyz="-0.013228 -3.2396E-06 0.00014534"
+        rpy="0 0 0" />
+      
+      <inertia
+        ixx="1E-05"
+        ixy="-6.5021E-11"
+        ixz="1.6041E-09"
+        iyy="1E-05"
+        iyz="-3.0147E-10"
+        izz="1E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://autonomous_description/meshes/camera_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://autonomous_description/meshes/camera_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="camera_joint"
+    type="fixed">
+    <origin
+      xyz="${camera_x_offset} 0 ${camera_z_offset}"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="camera_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="laser_link">
+    <inertial>
+      <origin
+        xyz="-0.00047505 -0.00025388 -0.0085532"
+        rpy="0 0 0" />
+      
+      <inertia
+        ixx="1.1584E-05"
+        ixy="1.4579E-07"
+        ixz="-4.4049E-09"
+        iyy="1.1566E-05"
+        iyz="-2.3537E-09"
+        izz="2.0794E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://autonomous_description/meshes/laser_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.027451 0 0.81176 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://autonomous_description/meshes/laser_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="laser_joint"
+    type="fixed">
+    <origin
+      xyz="${laser_x_offset} 0 ${laser_z_offset}"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="laser_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+</robot>
